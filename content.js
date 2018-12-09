@@ -1,37 +1,18 @@
 chrome.extension.onRequest.addListener(function (request, sender, sendResponse) {
-    if (request.greeting == "hello") {
+    if (request.greeting == "scan") {
         const videos = document.getElementsByTagName('video')
+        const sources = document.getElementsByTagName('source')
+        //console.log('sources', sources)
+        //console.log('videos', videos)
         const list = []
-        console.log('gl', typeof videos)
+
         for (let i = 0; i < Object.keys(videos).length; i++) {
-            console.log('link', videos[i].src)
-            list.push(videos[i].src)
+            list.push(videos[i].src.replace('mime=true', ''))
         }
-        console.log('sending from ' + request.id, list)
+        for (let i = 0; i < Object.keys(sources).length; i++) {
+            list.push(sources[i].src.replace('mime=true', ''))
+        }
         if (list.length > 0)
             sendResponse(list);
     }
 });
-
-// const nodeInsertedCallback = (event) => {
-//     //console.log('value', Object.values(event.path))
-//     //const t = Object.assign({}, event.path)
-//     const size = Object.keys(event.path).length
-//     for (let i = 0; i < size; i++) {
-//         if (event.path[i] instanceof Document) {
-//             //console.log(event.path[i].document)
-
-//             const iframes = event.path[i].getElementsByTagName('iframe')
-//             const size2 = Object.keys(iframes).length
-//             for (let j = 0; j < size2; j++) {
-//                 //console.log(iframes[j].src)
-//                 console.log('da', iframes[j].contentWindow.document.getElementsByTagName('video'))
-//             }
-
-
-//         }
-//     }
-
-//  /usr/local/bin/node};
-
-//document.addEventListener('DOMNodeInserted', nodeInsertedCallback);
